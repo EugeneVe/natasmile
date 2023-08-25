@@ -1,0 +1,10 @@
+@import './Variables.scss';
+
+.app-wrapper {
+    background-image: var(--mainblockbg);
+
+    .app-content-wrapper {
+        height: 100vh;
+        // backdrop-filter: blur(60px);
+    }
+}
