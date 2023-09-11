@@ -1,8 +1,9 @@
-@import "../../Variables.scss";
+@import "../Variables.scss";
 
 .main-wrapper {
+
     .content-wrapper {
-        height: calc(100vh - 160px);
+        height: calc(100vh - 200px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -43,47 +44,29 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
+            margin-bottom: 25px;
+        }
 
-            a {
-                text-decoration: none;
+        .share-wrapper {
+            p {
+                text-align: center;
+                margin-bottom: 15px;
+                color: rgb(255, 255, 255);
+                text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.4);
             }
 
-            .link {
-                display: flex;
-                background-color: rgba(0, 0, 0, .2);
-                backdrop-filter: blur(50px);
-                border: solid 1px rgb(255, 255, 255);
-                border-radius: 25px;
-                width: 360px;
-                padding: 10px;
-                margin-bottom: 10px;
-                transition: all 300ms;
-                cursor: pointer;
+            .share-links {
+                button {
+                    margin-right: 25px;
+                    transition: all 300ms;
 
-                @media only screen and (max-width:400px) {
-                    width: 88vw;
-                }
-
-                .icon {
-                    height: 25px;
-
-                    img {
-                        width: 25px;
-                        height: 25px;
+                    &:last-child {
+                        margin-right: 0px;
                     }
-                }
 
-                .link-name {
-                    display: flex;
-                    justify-content: center;
-                    width: 100%;
-                    color: rgb(255, 255, 255);
-                    text-align: center;
-                    padding-right: 20px;
-                }
-
-                &:hover {
-                    transform: scale(1.1);
+                    &:hover {
+                        scale: 1.2;
+                    }
                 }
             }
         }
@@ -98,4 +81,12 @@
             }
         }
     }
+}
+
+.hidden-popup {
+    bottom: 0;
+    height: 0px;
+    padding: 0px;
+    overflow: hidden;
+
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import MainPage from "./components/pages/Main";
+import MainPage from "./pages/Main";
 import "./App.scss";
 
 const App = () => {
