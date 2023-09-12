@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import OnlyFansLogo from "../assests/icons/onlyfans.png";
 import InstagramLogo from "../assests/icons/instagram.png";
 import TwitterLogo from "../assests/icons/twitter.png";
+import PaypalLogo from "../assests/icons/paypal.svg";
 import Popup from "../components/popup/Popup";
 import {
   FacebookShareButton,
@@ -32,7 +33,7 @@ const Main = () => {
               <p className="bold">OnlyFans 😋</p> <br />
               Sensative Content
             </p>
-            <br /> This link contains OnlyFans content, a platform limited{" "}
+            <br /> This link contains OnlyFans content, a platform limited
             <br /> to users and visitors of 18 and over
           </div>
           <a
@@ -43,6 +44,9 @@ const Main = () => {
             }}
           >
             <div className="link invert">
+              <div className="icon">
+                <p>➜</p>
+              </div>
               <div className="link-name">Continue</div>
             </div>
           </a>
@@ -51,7 +55,7 @@ const Main = () => {
       <div className="main-wrapper">
         <div className="content-wrapper">
           <div className="logo" />
-          <div className="name">Nataliia Ve</div>
+          <div className="name">Naty Smile</div>
           <div className="description">
             Fitness and sports enthusiast,
             <br /> join me at OnlyFans
@@ -93,6 +97,14 @@ const Main = () => {
                 <TelegramIcon size={40} round={true} />
               </TelegramShareButton>
             </div>
+          </div>
+          <div className="support-wrapper">
+            <a href="https://www.paypal.com/paypalme/natyvep">
+              <div className="support-content">
+                <div className="support-label">support me</div>
+                <img src={PaypalLogo} alt="" />
+              </div>
+            </a>
           </div>
           <div className="des-link">
             <a href="https://eugeneve.github.io/" target="blank">
