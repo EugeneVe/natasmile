@@ -1,21 +1,21 @@
 @import "../Variables.scss";
 
 .main-wrapper {
-
     .content-wrapper {
         height: calc(100vh - 50px);
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-direction: column;
+        margin-top: 50px;
 
         .logo {
             background-image: url(https://res.cloudinary.com/eugeneve/image/upload/v1692925350/nataliia/eyql3i4n9bj0cm7p7rsj.jpg);
             background-size: 120%;
+            background-repeat: no-repeat;
             background-position: center left -5px;
-            height: 140px;
-            width: 140px;
-            border-radius: 50%;
+            min-height: 140px;
+            min-width: 140px;
+            border-radius: 75px;
             margin-bottom: 25px;
             transition: all 300ms;
 
@@ -72,6 +72,7 @@
 
         .support-wrapper {
             width: 100%;
+            margin-bottom: 50px;
 
             .support-content {
                 display: flex;
@@ -96,15 +97,21 @@
                 }
             }
         }
+    }
 
-        .des-link {
-            position: absolute;
-            bottom: 15px;
+    .des-link {
+        position: fixed;
+        bottom: 10px;
+        text-align: center;
+        width: 100%;
 
-            a {
-                text-decoration: none;
-                @include text-parameters;
-            }
+        @media (-webkit-min-device-pixel-ratio: 3) {
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+            @include text-parameters;
         }
     }
 }

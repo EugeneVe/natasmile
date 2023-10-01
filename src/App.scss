@@ -1,11 +1,1 @@
 @import './Variables.scss';
-
-.app-wrapper {
-    background-image: var(--mainblockbg);
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    .app-content-wrapper {
-        height: 100vh;
-    }
-}
