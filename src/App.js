@@ -1,15 +1,16 @@
 import React from "react";
-import MainPage from "./pages/Main";
+import Main from "./pages/Main";
 import AlertPopup from "./components/alertPopup/AlertPopup";
 import "./App.scss";
 
 const App = () => {
+  const checkValue = localStorage.getItem("ageCheck");
+
   return (
     <>
-      <AlertPopup />
       <div className="app-wrapper">
         <div className="app-content-wrapper">
-          <MainPage />
+          {checkValue === "true" ? <Main /> : <AlertPopup />}
         </div>
       </div>
     </>
