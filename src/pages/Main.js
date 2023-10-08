@@ -29,10 +29,10 @@ const Main = () => {
             ></div>
           </div>
           <div className="description">
-            <p className="bold">
+            <div className="bold">
               <p className="bold">OnlyFans 😋</p> <br />
               Sensative Content
-            </p>
+            </div>
             <br /> This link contains OnlyFans content, a platform limited
             <br /> to users and visitors of 18 and over
           </div>

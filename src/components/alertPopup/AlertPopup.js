@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Cookies from "js-cookie";
 import Main from "../../pages/Main";
 import "./AlertPopup.scss";
 
@@ -6,7 +7,7 @@ const AlertPopup = () => {
   const [redirectToMain, setRedirectToMain] = useState(false);
 
   const handleYesClick = () => {
-    localStorage.setItem("ageCheck", "true");
+    Cookies.set("ageCheck", "true", { expires: 30 });
     setRedirectToMain(true);
   };
 
