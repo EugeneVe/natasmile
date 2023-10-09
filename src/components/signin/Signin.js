@@ -4,9 +4,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../Firebase";
 import {
   getDownloadURL,
+  listAll,
   ref,
   uploadBytes,
   deleteObject,
+  getMetadata,
 } from "firebase/storage";
 import { imageDb } from "../../Firebase";
 import { v4 } from "uuid";
@@ -44,7 +46,6 @@ function SignIn() {
       listen();
     };
   }, []);
-
   const userSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -55,6 +56,7 @@ function SignIn() {
       });
   };
 
+  const imagesListRef = ref(imageDb, "images/");
   const uploadFile = () => {
     if (imageUpload == null) return;
     const imageRef = ref(imageDb, `images/${imageUpload.name + v4()}`);
@@ -62,6 +64,7 @@ function SignIn() {
       getDownloadURL(snapshot.ref).then((url) => {
         const timestamp = new Date().getTime();
         setImageData((prev) => [...prev, { url, timestamp }]);
+
         // Reset the file input by clearing its value
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
@@ -69,6 +72,24 @@ function SignIn() {
       });
     });
   };
+
+  useEffect(() => {
+    listAll(imagesListRef).then((response) => {
+      const promises = response.items.map((item) => {
+        return getDownloadURL(item).then((url) => {
+          return getMetadata(item).then((metadata) => {
+            const timestamp = new Date(metadata.timeCreated).getTime();
+            return { url, timestamp };
+          });
+        });
+      });
+      Promise.all(promises).then((imageDataArray) => {
+        // Sort the images by timestamp in descending order (most recent first)
+        imageDataArray.sort((a, b) => b.timestamp - a.timestamp);
+        setImageData(imageDataArray);
+      });
+    });
+  }, []);
 
   // Function to delete an image
   const deleteImage = (imageUrl) => {
@@ -119,6 +140,7 @@ function SignIn() {
           ) : (
             <></>
           )}
+
           <div>
             {authUser ? (
               <div className="sing-out-button" onClick={userSignOut}>
