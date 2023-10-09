@@ -1,0 +1,93 @@
+.signin-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: aliceblue;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 4;
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    input {
+      margin-right: 10px;
+      margin-bottom: 15px;
+      font-size: 20px;
+      padding: 5px;
+    }
+    .login-button {
+      background-color: rgb(57, 87, 112);
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+      color: rgba($color: #ffffff, $alpha: 1);
+      cursor: pointer;
+    }
+  }
+  .sing-out-button {
+    background-color: rgb(57, 87, 112);
+    border-radius: 5px;
+    padding: 10px;
+    color: rgba($color: #ffffff, $alpha: 1);
+    cursor: pointer;
+  }
+}
+.image-wrapper {
+  position: absolute;
+  top: 50px;
+  left: calc(50% - 70px);
+  .image-content {
+    .remove-image {
+      background-color: rgb(57, 87, 112);
+      border-radius: 5px;
+      padding: 10px;
+      color: rgba($color: #ffffff, $alpha: 1);
+      cursor: pointer;
+    }
+    .uploaded-img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 100px;
+      z-index: 3;
+    }
+  }
+  .upload {
+    position: fixed;
+    left: 50%;
+    top: 350px;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 30px;
+    input {
+      font-size: 18px;
+      width: 250px;
+      margin-bottom: 15px;
+    }
+    .upload-image-button {
+      background-color: rgb(57, 87, 112);
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      color: rgba($color: #ffffff, $alpha: 1);
+      cursor: pointer;
+    }
+  }
+}
+.open-modal-login {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 5;
+}
