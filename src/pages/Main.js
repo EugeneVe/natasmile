@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import OnlyFansLogo from "../assests/icons/onlyfans.png";
 import InstagramLogo from "../assests/icons/instagram.png";
 import TwitterLogo from "../assests/icons/twitter.png";
 import PaypalLogo from "../assests/icons/paypal.svg";
 import Popup from "../components/popup/Popup";
+import ImageUploader from "../components/imageUploader/ImageUploader";
+import { useAuth } from "../Contexts/AuthUserContext";
+import { useImage } from "../Contexts/ImageUplodedContext";
+import { useModal } from "../Contexts/ModalContext";
+import { ref, deleteObject } from "firebase/storage";
+import { imageDb } from "../Firebase";
+import SignIn from "../components/signin/Signin";
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -13,55 +20,81 @@ import {
   TwitterIcon,
 } from "react-share";
 import "./Main.scss";
+import OnlyFans from "../components/onlyFans/OnlyFans";
 
 const Main = () => {
-  const [popup, setPopup] = useState(false);
+  const { popupFans, setPopupFans, popupLogin, setPopupLogin } = useModal();
+  const { imageData, setImageData } = useImage();
+  const { authUser } = useAuth();
+  console.log(authUser);
+
+  const deleteImage = (imageUrl) => {
+    const imageRef = ref(imageDb, imageUrl);
+    deleteObject(imageRef)
+      .then(() => {
+        setImageData(imageData.filter((data) => data.url !== imageUrl));
+      })
+      .catch((error) => {
+        console.error("Error deleting image: ", error);
+      });
+  };
   return (
     <>
-      <Popup className={!popup ? "hidden-popup" : ""}>
-        <>
-          <div className="close-wrapper">
-            <div
-              className="close"
-              onClick={() => {
-                setPopup(!popup);
-              }}
-            ></div>
-          </div>
-          <div className="description">
-            <div className="bold">
-              <p className="bold">OnlyFans 😋</p> <br />
-              Sensative Content
-            </div>
-            <br /> This link contains OnlyFans content, a platform limited
-            <br /> to users and visitors of 18 and over
-          </div>
-          <a
-            href="https://onlyfans.com/nat_smile"
-            target="blank"
+      <Popup className={!popupFans ? "hidden-popup" : ""}>
+        <OnlyFans />
+      </Popup>
+      <Popup className={!popupLogin ? "hidden-popup " : "popup-login"}>
+        <div className="close-wrapper">
+          <div
+            className="close"
             onClick={() => {
-              setPopup(!popup);
+              setPopupLogin(!popupLogin);
             }}
-          >
-            <div className="link invert">
-              <div className="icon">
-                <p>➜</p>
-              </div>
-              <div className="link-name">Continue</div>
-            </div>
-          </a>
-        </>
+          ></div>
+        </div>
+        <SignIn />
       </Popup>
       <div className="main-wrapper">
+        <div
+          className="open-login-menu"
+          onClick={() => setPopupLogin(!popupLogin)}
+        >
+          {!popupLogin ? <>☰</> : <>✕</>}
+        </div>
         <div className="content-wrapper">
-          <div className="logo" />
+          <ImageUploader />
+          <>
+            {imageData.length !== 0 ? (
+              <>
+                {imageData.map(({ url, timestamp }) => (
+                  <div className="avatar-content" key={timestamp}>
+                    <img
+                      className="uploaded-avatar"
+                      src={url}
+                      alt={timestamp}
+                    />
+                    {authUser && (
+                      <div
+                        className="remove-avatar"
+                        onClick={() => deleteImage(url)}
+                      >
+                        Delete
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="logo" />
+            )}
+          </>
           <div className="name">Naty Smile</div>
           <div className="description">
             Fitness and sports enthusiast,
             <br /> join me at OnlyFans
           </div>
           <div className="links">
-            <div className="link" onClick={() => setPopup(!popup)}>
+            <div className="link" onClick={() => setPopupFans(!popupFans)}>
               <div className="icon">
                 <img src={OnlyFansLogo} alt="" />
               </div>
