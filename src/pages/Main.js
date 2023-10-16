@@ -26,7 +26,6 @@ const Main = () => {
   const { popupFans, setPopupFans, popupLogin, setPopupLogin } = useModal();
   const { imageData, setImageData } = useImage();
   const { authUser } = useAuth();
-  console.log(authUser);
 
   const deleteImage = (imageUrl) => {
     const imageRef = ref(imageDb, imageUrl);

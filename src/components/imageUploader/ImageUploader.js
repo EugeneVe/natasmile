@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useImage } from "../../Contexts/ImageUplodedContext";
 import { useAuth } from "../../Contexts/AuthUserContext";
 import {
@@ -12,6 +12,7 @@ import { imageDb } from "../../Firebase";
 import "./imageUploader.scss";
 
 const ImageUploader = () => {
+  const [loading, setLoading] = useState(false); // Add loading state
   const { imageUpload, setImageUpload, imageData, setImageData } = useImage();
   const { authUser } = useAuth();
   const fileInputRef = useRef(null);
@@ -19,18 +20,26 @@ const ImageUploader = () => {
 
   const uploadFile = () => {
     if (imageUpload) {
-      const specificName = "avarar.jpg"; // Replace with desired name
+      const specificName = "avatar.jpg"; // Replace with the desired name
       const imageRef = ref(imageDb, `images/${specificName}`);
-      uploadBytes(imageRef, imageUpload).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setImageData([
-            { url, timestamp: new Date().getTime() },
-            ...imageData,
-          ]);
-          fileInputRef.current.value = "";
+      setLoading(true); // Set loading state to true
+
+      uploadBytes(imageRef, imageUpload)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            setImageData([
+              { url, timestamp: new Date().getTime() },
+              ...imageData,
+            ]);
+            fileInputRef.current.value = "";
+            setLoading(false); // Set loading state to false after upload
+          });
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error uploading image: ", error);
+          setLoading(false); // Set loading state to false in case of an error
         });
-        window.location.reload();
-      });
     }
   };
 
@@ -66,11 +75,14 @@ const ImageUploader = () => {
                 onChange={(e) => setImageUpload(e.target.files[0])}
               />
             </label>
-
-            <div className="upload-image-button" onClick={uploadFile}>
-              Set Avatar
-            </div>
-          </div>{" "}
+            {loading ? (
+              <div className="loader">IMAGE IS LOADING...</div>
+            ) : (
+              <div className="upload-image-button" onClick={uploadFile}>
+                Set Avatar
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <></>
