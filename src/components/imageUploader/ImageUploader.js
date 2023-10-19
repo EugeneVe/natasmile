@@ -1,12 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useImage } from "../../Contexts/ImageUplodedContext";
 import { useAuth } from "../../Contexts/AuthUserContext";
+import { ReactComponent as AddImage } from "../../assests/icons/addImg.svg";
 import {
   getDownloadURL,
   listAll,
   ref,
   uploadBytes,
   getMetadata,
+  deleteObject,
 } from "firebase/storage";
 import { imageDb } from "../../Firebase";
 import "./imageUploader.scss";
@@ -59,15 +61,48 @@ const ImageUploader = () => {
     });
   }, []);
 
+  const deleteImage = (imageUrl) => {
+    const imageRef = ref(imageDb, imageUrl);
+    deleteObject(imageRef)
+      .then(() => {
+        setImageData(imageData.filter((data) => data.url !== imageUrl));
+      })
+      .catch((error) => {
+        console.error("Error deleting image: ", error);
+      });
+  };
+
   return (
     <>
       {authUser ? (
         <div className="image-uploader-wrapper">
+          {imageData.length !== 0 ? (
+            <>
+              {imageData.map(({ url, timestamp }) => (
+                <div className="avatar-content" key={timestamp}>
+                  <img className="uploaded-avatar" src={url} alt={timestamp} />
+                  {authUser && (
+                    <div
+                      className="remove-avatar"
+                      onClick={() => deleteImage(url)}
+                    >
+                      Delete
+                    </div>
+                  )}
+                </div>
+              ))}
+            </>
+          ) : (
+            <div className="logo" />
+          )}
+
           <div className="upload">
             <p>Just select a picture from your device</p>
             <br />
-            <label>
-              Select a file: {imageUpload?.name}
+            <label title={imageUpload?.name}>
+              <AddImage />
+              <p>Select a file:</p>
+              <div className="image-name">{imageUpload?.name}</div>
               <input
                 type="file"
                 ref={fileInputRef}
