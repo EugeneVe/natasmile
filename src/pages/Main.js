@@ -5,6 +5,7 @@ import TwitterLogo from "../assests/icons/twitter.png";
 import PaypalLogo from "../assests/icons/paypal.svg";
 import Popup from "../components/popup/Popup";
 import ImageUploader from "../components/imageUploader/ImageUploader";
+import { useUserData } from "../Contexts/UserDataContext";
 import { useAuth } from "../Contexts/AuthUserContext";
 import { useImage } from "../Contexts/ImageUplodedContext";
 import { useModal } from "../Contexts/ModalContext";
@@ -19,10 +20,11 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "react-share";
-import "./Main.scss";
 import OnlyFans from "../components/onlyFans/OnlyFans";
+import "./Main.scss";
 
 const Main = () => {
+  const { fetchData } = useUserData();
   const { popupFans, setPopupFans, popupLogin, setPopupLogin } = useModal();
   const { imageData, setImageData } = useImage();
   const { authUser } = useAuth();
@@ -37,6 +39,7 @@ const Main = () => {
         console.error("Error deleting image: ", error);
       });
   };
+
   return (
     <>
       <Popup className={!popupFans ? "hidden-popup" : ""}>
@@ -65,33 +68,28 @@ const Main = () => {
           <>
             {imageData.length !== 0 ? (
               <>
-                {imageData.map(({ url, timestamp }) => (
-                  <div className="avatar-content" key={timestamp}>
-                    <img
-                      className="uploaded-avatar"
-                      src={url}
-                      alt={timestamp}
-                    />
-                    {authUser && (
-                      <div
-                        className="remove-avatar"
-                        onClick={() => deleteImage(url)}
-                      >
-                        Delete
-                      </div>
-                    )}
-                  </div>
-                ))}
+                <div className="avatar-content">
+                  <img
+                    className="uploaded-avatar"
+                    src={imageData[0].url}
+                    alt={imageData[0].timestamp}
+                  />
+                  {authUser && (
+                    <div
+                      className="remove-avatar"
+                      onClick={() => deleteImage(imageData[0].url)}
+                    >
+                      Delete
+                    </div>
+                  )}
+                </div>
               </>
             ) : (
               <div className="logo" />
             )}
           </>
-          <div className="name">Naty Smile</div>
-          <div className="description">
-            Fitness and sports enthusiast,
-            <br /> join me at OnlyFans
-          </div>
+          <div className="name">{fetchData[0]?.Name}</div>
+          <div className="description">{fetchData[0]?.Description}</div>
           <div className="links">
             <div className="link" onClick={() => setPopupFans(!popupFans)}>
               <div className="icon">

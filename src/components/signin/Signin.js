@@ -7,7 +7,7 @@ import { useAuth } from "../../Contexts/AuthUserContext";
 import "./Signin.scss";
 
 function SignIn() {
-  const { popupFans, setPopupFans, popupLogin, setPopupLogin } = useModal();
+  const { setPopupLogin } = useModal();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { authUser, userExist, userNotExist } = useAuth();
@@ -38,9 +38,7 @@ function SignIn() {
 
   const userSignOut = () => {
     signOut(auth)
-      .then(() => {
-        console.log("Signed out");
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
