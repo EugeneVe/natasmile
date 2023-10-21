@@ -12,9 +12,10 @@ import {
 } from "firebase/storage";
 import { imageDb } from "../../Firebase";
 import "./imageUploader.scss";
+import UserData from "../userData/UserData";
 
 const ImageUploader = () => {
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
   const { imageUpload, setImageUpload, imageData, setImageData } = useImage();
   const { authUser } = useAuth();
   const fileInputRef = useRef(null);
@@ -36,7 +37,7 @@ const ImageUploader = () => {
             fileInputRef.current.value = "";
             setLoading(false); // Set loading state to false after upload
           });
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((error) => {
           console.error("Error uploading image: ", error);
@@ -71,26 +72,27 @@ const ImageUploader = () => {
         console.error("Error deleting image: ", error);
       });
   };
-
   return (
     <>
       {authUser ? (
         <div className="image-uploader-wrapper">
           {imageData.length !== 0 ? (
             <>
-              {imageData.map(({ url, timestamp }) => (
-                <div className="avatar-content" key={timestamp}>
-                  <img className="uploaded-avatar" src={url} alt={timestamp} />
-                  {authUser && (
-                    <div
-                      className="remove-avatar"
-                      onClick={() => deleteImage(url)}
-                    >
-                      Delete
-                    </div>
-                  )}
-                </div>
-              ))}
+              <div className="avatar-content">
+                <img
+                  className="uploaded-avatar"
+                  src={imageData[0].url}
+                  alt={imageData[0].timestamp}
+                />
+                {authUser && (
+                  <div
+                    className="remove-avatar"
+                    onClick={() => deleteImage(imageData[0].url)}
+                  >
+                    Delete
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <div className="logo" />
@@ -118,6 +120,7 @@ const ImageUploader = () => {
               </div>
             )}
           </div>
+          <UserData />
         </div>
       ) : (
         <></>
