@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { useImage } from "../../Contexts/ImageUplodedContext";
 import { useAuth } from "../../Contexts/AuthUserContext";
 import { ReactComponent as AddImage } from "../../assests/icons/addImg.svg";
+import Tooltip from "@mui/material/Tooltip";
 import {
   getDownloadURL,
   listAll,
@@ -35,9 +36,9 @@ const ImageUploader = () => {
               ...imageData,
             ]);
             fileInputRef.current.value = "";
+            setImageUpload("");
             setLoading(false); // Set loading state to false after upload
           });
-          // window.location.reload();
         })
         .catch((error) => {
           console.error("Error uploading image: ", error);
@@ -101,10 +102,28 @@ const ImageUploader = () => {
           <div className="upload">
             <p>Just select a picture from your device</p>
             <br />
-            <label title={imageUpload?.name}>
+            <label>
               <AddImage />
-              <p>Select a file:</p>
-              <div className="image-name">{imageUpload?.name}</div>
+              {imageUpload ? (
+                <Tooltip
+                  arrow
+                  title={
+                    <div className="image-to-be-upload">
+                      <img src={URL.createObjectURL(imageUpload)} alt="" />
+                      <br />
+                      {imageUpload?.name}
+                    </div>
+                  }
+                >
+                  {!imageUpload ? (
+                    <></>
+                  ) : (
+                    <div className="image-name">{imageUpload?.name}</div>
+                  )}
+                </Tooltip>
+              ) : (
+                <p>Select a your image:</p>
+              )}
               <input
                 type="file"
                 ref={fileInputRef}
@@ -115,9 +134,15 @@ const ImageUploader = () => {
             {loading ? (
               <div className="loader">IMAGE IS LOADING...</div>
             ) : (
-              <div className="upload-image-button" onClick={uploadFile}>
-                Set Avatar
-              </div>
+              <>
+                {imageUpload ? (
+                  <div className="upload-image-button" onClick={uploadFile}>
+                    Set Avatar
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </div>
           <UserData />

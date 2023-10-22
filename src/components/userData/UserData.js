@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUserData } from "../../Contexts/UserDataContext";
-import { doc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import "./UserData.scss";
 
 const UserData = () => {
@@ -9,12 +15,27 @@ const UserData = () => {
   const [description, setDescription] = useState("");
   const [id, setId] = useState("");
 
+  useEffect(() => {
+    // Add a Firebase Firestore data listener to update fetchData
+    const unsubscribe = onSnapshot(dbref, (querySnapshot) => {
+      const updatedData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setFetchData(updatedData);
+    });
+
+    // Clear the listener when unmounting a component
+    return () => {
+      unsubscribe();
+    };
+  }, [dbref, setFetchData]);
+
   const add = async () => {
     const addData = await addDoc(dbref, {
       Name: name,
       Description: description,
     });
-    window.location.reload();
   };
 
   const passData = async (id) => {
@@ -32,17 +53,15 @@ const UserData = () => {
       Name: name,
       Description: description,
     });
-    window.location.reload();
   };
 
   const del = async (id) => {
     const delRef = doc(dbref, id);
-    try {
-      await deleteDoc(delRef);
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
+    await deleteDoc(delRef)
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -80,8 +99,13 @@ const UserData = () => {
         {fetchData[0]?.id ? (
           <>
             <div className="user-data-content">
-              <p>Name: {fetchData[0]?.Name}</p>
-              <p>Description: {fetchData[0]?.Description}</p>
+              <p>
+                Name: <span>{fetchData[0]?.Name}</span>
+              </p>
+              <p>
+                Description: <br />
+                <span>{fetchData[0]?.Description}</span>
+              </p>
             </div>
             <div className="user-data-buttons">
               <button

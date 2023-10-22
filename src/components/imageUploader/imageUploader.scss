@@ -21,7 +21,7 @@
       cursor: pointer;
       display: flex;
       justify-content: flex-start;
-      max-width: 320px;
+      max-width: 300px;
       background-color: rgb(255, 255, 255);
       border-radius: 15px;
       border: 1px solid rgba(0, 0, 0, 0.3);
@@ -31,6 +31,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 20px;
       p {
         margin-right: 5px;
       }
@@ -53,7 +54,6 @@
     }
     .upload-image-button {
       cursor: pointer;
-      margin-top: 20px;
       margin-bottom: 30px;
       background-color: rgb(255, 255, 255);
       border-radius: 15px;
@@ -68,8 +68,18 @@
       }
     }
     .loader {
-      margin-top: 20px;
+      margin: 20px 0;
       text-align: center;
     }
+  }
+}
+
+.image-to-be-upload {
+  text-align: center;
+  img {
+    width: 160px;
+    height: 160px;
+    border-radius: 10px;
+    object-fit: cover;
   }
 }
