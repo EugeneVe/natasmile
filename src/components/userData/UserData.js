@@ -7,10 +7,12 @@ import {
   deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
+
 import "./UserData.scss";
 
 const UserData = () => {
   const { fetchData, setFetchData, dbref } = useUserData();
+  const [input, setInput] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [id, setId] = useState("");
@@ -58,7 +60,10 @@ const UserData = () => {
   const del = async (id) => {
     const delRef = doc(dbref, id);
     await deleteDoc(delRef)
-      .then(() => {})
+      .then(() => {
+        setName("");
+        setDescription("");
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -66,21 +71,27 @@ const UserData = () => {
 
   return (
     <div className="user-data-wrapper">
-      <div className="user-data-label">Enter your Data:</div>
-      <input
-        type="text"
-        placeholder="Full Name"
-        autoComplete="off"
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-      />
-      <input
-        type="text"
-        placeholder="Short description"
-        autoComplete="off"
-        onChange={(e) => setDescription(e.target.value)}
-        value={description}
-      />
+      {input || !fetchData[0]?.id ? (
+        <>
+          <div className="user-data-label">Enter your Data:</div>
+          <input
+            type="text"
+            placeholder="Full Name"
+            autoComplete="off"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+          <input
+            type="text"
+            placeholder="Short description"
+            autoComplete="off"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
+          />
+        </>
+      ) : (
+        <></>
+      )}
       {!fetchData[0]?.id ? (
         <button className="user-data-button" onClick={add}>
           Add
@@ -88,8 +99,14 @@ const UserData = () => {
       ) : (
         <></>
       )}
-      {id ? (
-        <button className="user-data-button" onClick={update}>
+      {input ? (
+        <button
+          className="user-data-button"
+          onClick={() => {
+            update();
+            setInput(false);
+          }}
+        >
           Update
         </button>
       ) : (
@@ -110,13 +127,19 @@ const UserData = () => {
             <div className="user-data-buttons">
               <button
                 className="user-data-button"
-                onClick={() => passData(fetchData[0]?.id)}
+                onClick={() => {
+                  passData(fetchData[0]?.id);
+                  setInput(true);
+                }}
               >
                 Update
               </button>
               <button
                 className="user-data-button alert"
-                onClick={() => del(fetchData[0]?.id)}
+                onClick={() => {
+                  del(fetchData[0]?.id);
+                  setInput(false);
+                }}
               >
                 Delete
               </button>
