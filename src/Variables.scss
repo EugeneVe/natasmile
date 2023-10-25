@@ -41,8 +41,11 @@ a {
   width: 360px;
   padding: 10px;
   margin-bottom: 10px;
-  transition: all 300ms;
   cursor: pointer;
+  animation: bounce-back 200ms;
+  &:hover {
+    animation: bounce 200ms forwards;
+  }
 
   @media only screen and (max-width: 400px) {
     width: 88vw;
@@ -69,13 +72,32 @@ a {
     text-align: center;
     padding-right: 20px;
   }
-
-  &:hover {
-    transform: scale(1.1);
-  }
 }
 
 .invert {
   border: 1px solid rgba(0, 0, 0, 0.9);
   background-color: rgba(0, 0, 0, 0.9);
+}
+
+@keyframes bounce {
+  0% {
+    scale: 1;
+  }
+  95% {
+    scale: 1.1;
+  }
+  100% {
+    scale: 1.05;
+  }
+}
+@keyframes bounce-back {
+  0% {
+    scale: 1.05;
+  }
+  95% {
+    scale: 0.95;
+  }
+  100% {
+    scale: 1;
+  }
 }

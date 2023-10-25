@@ -23,6 +23,9 @@
       font-size: 1.5rem;
       margin-bottom: 5px;
       @include text-parameters;
+      img {
+        margin-left: 5px;
+      }
     }
 
     .description {
