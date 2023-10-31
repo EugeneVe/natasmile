@@ -4,6 +4,7 @@ import { AuthUserProvider } from "./Contexts/AuthUserContext";
 import { ImageUplodedProvider } from "./Contexts/ImageUplodedContext";
 import CookieWarning from "./components/cookieWarning/CookieWarning";
 import { ModalProvider } from "./Contexts/ModalContext";
+import { AddNewBtnProvider } from "./Contexts/AddNewBtnContext";
 import { UserDataProvider } from "./Contexts/UserDataContext";
 import "./index.scss";
 import App from "./App";
@@ -13,16 +14,18 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //   <React.StrictMode>
   <>
-    <UserDataProvider>
-      <CookieWarning />
-      <AuthUserProvider>
-        <ImageUplodedProvider>
-          <ModalProvider>
-            <App />
-          </ModalProvider>
-        </ImageUplodedProvider>
-      </AuthUserProvider>
-    </UserDataProvider>
+    <AddNewBtnProvider>
+      <UserDataProvider>
+        <CookieWarning />
+        <AuthUserProvider>
+          <ImageUplodedProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+          </ImageUplodedProvider>
+        </AuthUserProvider>
+      </UserDataProvider>
+    </AddNewBtnProvider>
   </>
   //   </React.StrictMode>
 );

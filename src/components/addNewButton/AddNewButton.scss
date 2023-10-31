@@ -1,0 +1,67 @@
+.add-new-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  min-width: 300px;
+  input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: solid 1px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  .button {
+    cursor: pointer;
+    margin-bottom: 30px;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-weight: 600;
+    padding: 10px 10px;
+    transition: all 300ms ease-in-out;
+    &:hover {
+      scale: 1.1;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+  .remove-button-wrapper {
+    display: flex;
+    position: relative;
+    button {
+      position: absolute;
+      right: 4px;
+      border-radius: 40px;
+      border: 0px solid rgb(255, 255, 255);
+      top: 4px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      svg {
+        width: 70%;
+        height: 70%;
+        fill: rgb(185, 0, 0);
+      }
+    }
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    .checkbox {
+      width: 30px;
+      height: 30px;
+      margin: 0 0 0 15px;
+      cursor: pointer;
+    }
+  }
+}

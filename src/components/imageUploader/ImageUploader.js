@@ -2,7 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import { useImage } from "../../Contexts/ImageUplodedContext";
 import { useAuth } from "../../Contexts/AuthUserContext";
 import { ReactComponent as AddImage } from "../../assests/icons/addImg.svg";
+import Modal from "../modal/Modal";
 import Tooltip from "@mui/material/Tooltip";
+import AddNewButton from "../addNewButton/AddNewButton";
+import UserData from "../userData/UserData";
 import {
   getDownloadURL,
   listAll,
@@ -13,10 +16,10 @@ import {
 } from "firebase/storage";
 import { imageDb } from "../../Firebase";
 import "./imageUploader.scss";
-import UserData from "../userData/UserData";
 
 const ImageUploader = () => {
   const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState("");
   const { imageUpload, setImageUpload, imageData, setImageData } = useImage();
   const { authUser } = useAuth();
   const fileInputRef = useRef(null);
@@ -73,6 +76,7 @@ const ImageUploader = () => {
         console.error("Error deleting image: ", error);
       });
   };
+
   return (
     <>
       {authUser ? (
@@ -86,21 +90,27 @@ const ImageUploader = () => {
                   alt={imageData[0].timestamp}
                 />
                 {authUser && (
-                  <div
-                    className="remove-avatar"
-                    onClick={() => deleteImage(imageData[0].url)}
-                  >
+                  <div className="remove-avatar" onClick={() => setModal(true)}>
                     Delete
                   </div>
                 )}
               </div>
             </>
           ) : (
-            <div className="logo" />
+            <>
+              {!imageUpload ? (
+                <div className="logo" />
+              ) : (
+                <img
+                  className="uploaded-avatar"
+                  src={URL.createObjectURL(imageUpload)}
+                  alt=""
+                />
+              )}
+            </>
           )}
-
           <div className="upload">
-            <p>Just select a picture from your device</p>
+            {!imageUpload?.name && <p>Select a picture from your device</p>}
             <br />
             <label>
               <AddImage />
@@ -122,7 +132,7 @@ const ImageUploader = () => {
                   )}
                 </Tooltip>
               ) : (
-                <p>Select a your image:</p>
+                <p>Select your image:</p>
               )}
               <input
                 type="file"
@@ -137,7 +147,7 @@ const ImageUploader = () => {
               <>
                 {imageUpload ? (
                   <div className="upload-image-button" onClick={uploadFile}>
-                    Set Avatar
+                    Save avatar
                   </div>
                 ) : (
                   <></>
@@ -146,6 +156,33 @@ const ImageUploader = () => {
             )}
           </div>
           <UserData />
+          <AddNewButton />
+          {modal && (
+            <Modal>
+              <>
+                <p>Are you sure you want to remove image?</p>
+                <div className="user-data-buttons">
+                  <button
+                    className="user-data-button alert"
+                    onClick={() => {
+                      deleteImage(imageData[0].url);
+                      setModal(false);
+                    }}
+                  >
+                    YES
+                  </button>
+                  <button
+                    className="user-data-button"
+                    onClick={() => {
+                      setModal(false);
+                    }}
+                  >
+                    NO
+                  </button>
+                </div>
+              </>
+            </Modal>
+          )}
         </div>
       ) : (
         <></>

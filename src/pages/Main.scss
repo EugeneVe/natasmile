@@ -28,7 +28,7 @@
       }
     }
 
-    .description {
+    .main-description {
       text-align: center;
       max-width: 300px;
       margin-bottom: 25px;
@@ -95,12 +95,12 @@
     }
     .avatar-content {
       .remove-avatar {
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(171, 49, 49);
         border-radius: 15px;
         padding: 10px;
+        color: #fff;
         text-align: center;
         margin-bottom: 20px;
-        color: rgba($color: #212121, $alpha: 1);
         cursor: pointer;
         transition: all 300ms ease-in-out;
         border: 1px solid rgba(0, 0, 0, 0.3);
@@ -108,13 +108,6 @@
           scale: 1.1;
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-      }
-      .uploaded-avatar {
-        width: 140px;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 100px;
-        z-index: 3;
       }
     }
   }
@@ -149,4 +142,12 @@
   height: 0px;
   padding: 0px;
   overflow: hidden;
+}
+
+.uploaded-avatar {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 100px;
+  z-index: 3;
 }
