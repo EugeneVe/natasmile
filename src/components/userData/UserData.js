@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useUserData } from "../../Contexts/UserDataContext";
 import Modal from "../modal/Modal";
+import ButtonInModal from "../buttonInModal/buttonInModal";
 import {
   doc,
   addDoc,
@@ -147,29 +148,17 @@ const UserData = () => {
       </div>
       {modal && (
         <Modal>
-          <>
-            <p>Are you sure you want to remove data?</p>
-            <div className="user-data-buttons">
-              <button
-                className="user-data-button alert"
-                onClick={() => {
-                  del(fetchData[0]?.id);
-                  setInput(false);
-                  setModal(false);
-                }}
-              >
-                YES
-              </button>
-              <button
-                className="user-data-button"
-                onClick={() => {
-                  setModal(false);
-                }}
-              >
-                NO
-              </button>
-            </div>
-          </>
+          <ButtonInModal
+            title="Data"
+            onClickYes={() => {
+              del(fetchData[0]?.id);
+              setInput(false);
+              setModal(false);
+            }}
+            onClickNo={() => {
+              setModal(false);
+            }}
+          />
         </Modal>
       )}
     </div>

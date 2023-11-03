@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useAddNewBtn } from "../../Contexts/AddNewBtnContext";
 import { ReactComponent as RemoveIcon } from "../../assests/icons/removeIcon.svg";
 import { useAuth } from "../../Contexts/AuthUserContext";
+import ButtonInModal from "../../components/buttonInModal/buttonInModal";
+import Modal from "../../components/modal/Modal";
 import Popup from "../../components/popup/Popup";
 import { db } from "../../Firebase";
+import OnlyFans from "../onlyFans/OnlyFans";
 import {
   addDoc,
   collection,
@@ -12,7 +15,6 @@ import {
   doc,
 } from "@firebase/firestore";
 import "./AddNewButton.scss";
-import OnlyFans from "../onlyFans/OnlyFans";
 
 const AddNewButton = () => {
   const {
@@ -24,7 +26,9 @@ const AddNewButton = () => {
     setNewButtonLink,
   } = useAddNewBtn();
   const { authUser } = useAuth();
+  const [modal, setModal] = useState("");
   const [isSensitive, setIsSensitive] = useState(false);
+  const [buttonToDelete, setButtonToDelete] = useState(null);
   const [selectedButton, setSelectedButton] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentButtonName, setCurrentButtonName] = useState("");
@@ -102,23 +106,33 @@ const AddNewButton = () => {
           )}
         </>
       )}
-      {buttons.map((button, index) => (
-        <div key={index} className="remove-button-wrapper">
-          <div onClick={() => handleButtonLinkClick(button)}>
-            <div className="link">
-              <div className="link-name">{button.name}</div>
+      {buttons
+        .sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        )
+        .map((button, index) => (
+          <div key={index} className="remove-button-wrapper">
+            <div onClick={() => handleButtonLinkClick(button)}>
+              <div className="link">
+                <div className="link-name">{button.name}</div>
+              </div>
             </div>
+            {authUser && (
+              <>
+                <button
+                  onClick={() => {
+                    setModal(true);
+                    setButtonToDelete(button.id);
+                    setCurrentButtonName(button.name);
+                  }}
+                  title="Remove the button"
+                >
+                  <RemoveIcon />
+                </button>
+              </>
+            )}
           </div>
-          {authUser && (
-            <button
-              onClick={() => deleteButton(button.id)}
-              title="Remove the button"
-            >
-              <RemoveIcon />
-            </button>
-          )}
-        </div>
-      ))}
+        ))}
       {showConfirmation && (
         <Popup>
           <OnlyFans
@@ -130,6 +144,18 @@ const AddNewButton = () => {
             btnName={currentButtonName}
           />
         </Popup>
+      )}
+      {modal && (
+        <Modal>
+          <ButtonInModal
+            title={currentButtonName}
+            onClickYes={() => {
+              deleteButton(buttonToDelete);
+              setModal(false);
+            }}
+            onClickNo={() => setModal(false)}
+          />
+        </Modal>
       )}
     </div>
   );

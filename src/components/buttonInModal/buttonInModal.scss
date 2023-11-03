@@ -1,0 +1,19 @@
+.small-modal-buttons-wrapper {
+  .small-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0px 20px;
+    .small-modal-button {
+      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      border: solid 1px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: all 300ms ease-in-out;
+      &:hover {
+        scale: 1.1;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}

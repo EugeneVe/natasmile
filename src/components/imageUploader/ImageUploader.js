@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import ButtonInModal from "../buttonInModal/buttonInModal";
 import { useImage } from "../../Contexts/ImageUplodedContext";
 import { useAuth } from "../../Contexts/AuthUserContext";
 import { ReactComponent as AddImage } from "../../assests/icons/addImg.svg";
@@ -81,108 +82,101 @@ const ImageUploader = () => {
     <>
       {authUser ? (
         <div className="image-uploader-wrapper">
-          {imageData.length !== 0 ? (
-            <>
-              <div className="avatar-content">
-                <img
-                  className="uploaded-avatar"
-                  src={imageData[0].url}
-                  alt={imageData[0].timestamp}
-                />
-                {authUser && (
-                  <div className="remove-avatar" onClick={() => setModal(true)}>
-                    Delete
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <>
-              {!imageUpload ? (
-                <div className="logo" />
-              ) : (
-                <img
-                  className="uploaded-avatar"
-                  src={URL.createObjectURL(imageUpload)}
-                  alt=""
-                />
-              )}
-            </>
-          )}
-          <div className="upload">
-            {!imageUpload?.name && <p>Select a picture from your device</p>}
-            <br />
-            <label>
-              <AddImage />
-              {imageUpload ? (
-                <Tooltip
-                  arrow
-                  title={
-                    <div className="image-to-be-upload">
-                      <img src={URL.createObjectURL(imageUpload)} alt="" />
-                      <br />
-                      {imageUpload?.name}
+          <div className="dashboard-content">
+            {imageData.length !== 0 ? (
+              <>
+                <div className="avatar-content">
+                  <img
+                    className="uploaded-avatar"
+                    src={imageData[0].url}
+                    alt={imageData[0].timestamp}
+                  />
+                  {authUser && (
+                    <div
+                      className="remove-avatar"
+                      onClick={() => setModal(true)}
+                    >
+                      Delete
                     </div>
-                  }
-                >
-                  {!imageUpload ? (
-                    <></>
-                  ) : (
-                    <div className="image-name">{imageUpload?.name}</div>
                   )}
-                </Tooltip>
-              ) : (
-                <p>Select your image:</p>
-              )}
-              <input
-                type="file"
-                ref={fileInputRef}
-                multiple
-                onChange={(e) => setImageUpload(e.target.files[0])}
-              />
-            </label>
-            {loading ? (
-              <div className="loader">IMAGE IS LOADING...</div>
+                </div>
+              </>
             ) : (
               <>
-                {imageUpload ? (
-                  <div className="upload-image-button" onClick={uploadFile}>
-                    Save avatar
-                  </div>
+                {!imageUpload ? (
+                  <div className="logo" />
                 ) : (
-                  <></>
+                  <img
+                    className="uploaded-avatar"
+                    src={URL.createObjectURL(imageUpload)}
+                    alt=""
+                  />
                 )}
               </>
             )}
+            <div className="upload">
+              {!imageUpload?.name && <p>Select a picture from your device</p>}
+              <br />
+              <label>
+                <AddImage />
+                {imageUpload ? (
+                  <Tooltip
+                    arrow
+                    title={
+                      <div className="image-to-be-upload">
+                        <img src={URL.createObjectURL(imageUpload)} alt="" />
+                        <br />
+                        {imageUpload?.name}
+                      </div>
+                    }
+                  >
+                    {!imageUpload ? (
+                      <></>
+                    ) : (
+                      <div className="image-name">{imageUpload?.name}</div>
+                    )}
+                  </Tooltip>
+                ) : (
+                  <p>Select your image:</p>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  multiple
+                  onChange={(e) => setImageUpload(e.target.files[0])}
+                />
+              </label>
+              {loading ? (
+                <div className="loader">IMAGE IS LOADING...</div>
+              ) : (
+                <>
+                  {imageUpload ? (
+                    <div className="upload-image-button" onClick={uploadFile}>
+                      Save avatar
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+            </div>
+            <UserData />
+            <AddNewButton />
+            {modal && (
+              <Modal>
+                <ButtonInModal
+                  title="Image"
+                  onClickYes={() => {
+                    deleteImage(imageData[0].url);
+                    setModal(false);
+                  }}
+                  onClickNo={() => {
+                    setModal(false);
+                  }}
+                />
+              </Modal>
+            )}
           </div>
-          <UserData />
-          <AddNewButton />
-          {modal && (
-            <Modal>
-              <>
-                <p>Are you sure you want to remove image?</p>
-                <div className="user-data-buttons">
-                  <button
-                    className="user-data-button alert"
-                    onClick={() => {
-                      deleteImage(imageData[0].url);
-                      setModal(false);
-                    }}
-                  >
-                    YES
-                  </button>
-                  <button
-                    className="user-data-button"
-                    onClick={() => {
-                      setModal(false);
-                    }}
-                  >
-                    NO
-                  </button>
-                </div>
-              </>
-            </Modal>
-          )}
         </div>
       ) : (
         <></>
