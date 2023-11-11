@@ -1,7 +1,4 @@
 import React from "react";
-import OnlyFansLogo from "../assests/icons/onlyfans.png";
-import InstagramLogo from "../assests/icons/instagram.png";
-import TwitterLogo from "../assests/icons/twitter.png";
 import PaypalLogo from "../assests/icons/paypal.svg";
 import Popup from "../components/popup/Popup";
 import ImageUploader from "../components/imageUploader/ImageUploader";
@@ -21,12 +18,11 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from "react-share";
-import OnlyFans from "../components/onlyFans/OnlyFans";
 import "./Main.scss";
 
 const Main = () => {
   const { fetchData } = useUserData();
-  const { popupFans, setPopupFans, popupLogin, setPopupLogin } = useModal();
+  const { popupLogin, setPopupLogin } = useModal();
   const { imageData, setImageData } = useImage();
   const { authUser } = useAuth();
 
@@ -43,9 +39,6 @@ const Main = () => {
 
   return (
     <>
-      {/* <Popup className={!popupFans ? "hidden-popup" : ""}>
-        <OnlyFans />
-      </Popup> */}
       <Popup className={!popupLogin ? "hidden-popup " : "popup-login"}>
         <div className="close-wrapper">
           <div

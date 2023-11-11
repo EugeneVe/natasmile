@@ -78,6 +78,47 @@ const ImageUploader = () => {
       });
   };
 
+  // Drag and Drop file
+  useEffect(() => {
+    const handleDrag = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const handleDragIn = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const handleDragOut = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.target === document.body) {
+      }
+    };
+
+    const handleDrop = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        setImageUpload(e.dataTransfer.files[0]);
+        e.dataTransfer.clearData();
+      }
+    };
+
+    document.body.addEventListener("dragenter", handleDragIn);
+    document.body.addEventListener("dragleave", handleDragOut);
+    document.body.addEventListener("dragover", handleDrag);
+    document.body.addEventListener("drop", handleDrop);
+
+    return () => {
+      document.body.removeEventListener("dragenter", handleDragIn);
+      document.body.removeEventListener("dragleave", handleDragOut);
+      document.body.removeEventListener("dragover", handleDrag);
+      document.body.removeEventListener("drop", handleDrop);
+    };
+  }, [setImageUpload]);
+
   return (
     <>
       {authUser ? (
@@ -88,7 +129,11 @@ const ImageUploader = () => {
                 <div className="avatar-content">
                   <img
                     className="uploaded-avatar"
-                    src={imageData[0].url}
+                    src={
+                      !imageUpload
+                        ? imageData[0].url
+                        : URL.createObjectURL(imageUpload)
+                    }
                     alt={imageData[0].timestamp}
                   />
                   {authUser && (
@@ -115,7 +160,9 @@ const ImageUploader = () => {
               </>
             )}
             <div className="upload">
-              {!imageUpload?.name && <p>Select a picture from your device</p>}
+              {!imageUpload?.name && (
+                <p>Select a picture from your device or drag it anywhere</p>
+              )}
               <br />
               <label>
                 <AddImage />
