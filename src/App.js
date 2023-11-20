@@ -6,7 +6,6 @@ import "./App.scss";
 
 const App = () => {
   const [ageCheck] = useState(Cookies.get("ageCheck"));
-  console.log(process.env.REACT_APP_FIREBASE_API_KEY);
   return (
     <>
       <div className="app-wrapper">
