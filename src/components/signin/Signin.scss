@@ -27,6 +27,14 @@
       scale: 1.1;
       box-shadow: 0 10px 25px 0 rgba($color: #000000, $alpha: 0.05);
     }
+    &[disabled] {
+      background-color: rgba(201, 201, 201, 0.3);
+      color: rgba(0, 0, 0, 0.3);
+      cursor: not-allowed;
+      &:hover {
+        scale: 1;
+      }
+    }
   }
 }
 .sing-out-button {

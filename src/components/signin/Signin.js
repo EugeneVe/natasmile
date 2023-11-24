@@ -8,10 +8,12 @@ import "./Signin.scss";
 
 function SignIn() {
   const { setPopupLogin } = useModal();
-  const [emailOrPasswordError, setOrPasswordError] = useState("");
+  const [emailOrPasswordError, setEmailOrPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const { authUser, userExist, userNotExist } = useAuth();
 
   const validateEmail = (inputEmail) => {
@@ -20,17 +22,17 @@ function SignIn() {
   };
 
   const signIn = () => {
-    if (!validateEmail(email)) {
+    if (!validateEmail(formData.email)) {
       setEmailError("Please enter a valid email");
       return;
     }
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then((userCredential) => {
         console.log(userCredential);
       })
       .catch((error) => {
         console.log(error);
-        setOrPasswordError("Wrong email or password");
+        setEmailOrPasswordError("Wrong email or password");
       });
   };
 
@@ -57,7 +59,17 @@ function SignIn() {
   };
 
   const handleSignIn = () => {
-    signIn();
+    if (formData.email && formData.password) {
+      signIn();
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSignOut = () => {
@@ -79,28 +91,34 @@ function SignIn() {
           <div className="title-login">Log In</div>
           <input
             type="email"
+            name="email"
             placeholder="Enter your email"
-            value={email}
+            value={formData.email}
             onChange={(e) => {
-              setEmail(e.target.value);
+              handleInputChange(e);
               setEmailError("");
-              setOrPasswordError("");
             }}
             required
           />
           <div style={dynamicStyles}>{emailError}</div>
           <input
             type="password"
+            name="password"
             placeholder="Enter your password"
-            value={password}
+            value={formData.password}
             onChange={(e) => {
-              setPassword(e.target.value);
-              setOrPasswordError("");
+              handleInputChange(e);
+              setEmailOrPasswordError("");
             }}
             required
           />
           <div style={dynamicStyles}>{emailOrPasswordError}</div>
-          <div className="login-button" onClick={handleSignIn}>
+
+          <div
+            className="login-button"
+            onClick={handleSignIn}
+            disabled={!formData.email || !formData.password}
+          >
             Signin
           </div>
         </>
